@@ -1,0 +1,25 @@
+# guestbook-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: guestbook-ingress
+  namespace: argocd-demo
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - guestbook.local
+    secretName: guestbook-tls
+  rules:
+  - host: guestbook.local  # <-- This is the DNS name you'll use
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: guestbook
+            port:
+              number: 80
+
